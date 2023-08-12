@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+    <div id="slider">
+        <div id="slider-range"></div>
+        <div id="slider-handle"></div>
+        <div id="slider-value"></div>
+      </div>
+      </div>
+      <script>
+        const slider = document.getElementById('slider');
+const range = document.getElementById('slider-range');
+const handle = document.getElementById('slider-handle');
+const value = document.getElementById('slider-value');
+
+const min = 0;
+const max = 100;
+
+let isDragging = false;
+
+handle.addEventListener('mousedown', startDragging);
+handle.addEventListener('mouseup', stopDragging);
+
+
+slider.addEventListener('click', moveHandle);
+
+function startDragging() {
+  isDragging = true;
+}
+
+function stopDragging() {
+  isDragging = false;
+}
+
+function moveHandle(event) {
+  if (!isDragging && event.type !== 'click') return;
+
+  const sliderRect = slider.getBoundingClientRect();
+  const sliderWidth = slider.offsetWidth;
+  const clickPosition = event.clientX - sliderRect.left;
+  const percentage = (clickPosition / sliderWidth) * 100;
+
+  const newValue = Math.round((max - min) * (percentage / 100) + min);
+  const newRange = Math.min(Math.max(0, percentage), 100);
+
+  range.style.width = `${newRange}%`;
+  handle.style.left = `${newRange}%`;
+  value.textContent = newValue;
+}
+      </script>
+</body>
+</html>
